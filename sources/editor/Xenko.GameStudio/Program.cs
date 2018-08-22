@@ -28,24 +28,22 @@ using Xenko.Core;
 using Xenko.Core.Diagnostics;
 using Xenko.Core.Extensions;
 using Xenko.Core.IO;
-using Xenko.Core.VisualStudio;
-using Xenko.PrivacyPolicy;
 using Xenko.Core.MostRecentlyUsedFiles;
 using Xenko.Core.Presentation.Interop;
-using Xenko.Assets.Presentation;
-using Xenko.GameStudio.View;
-using Xenko.Graphics;
-using Xenko.Input;
 using Xenko.Core.Presentation.View;
 using Xenko.Core.Presentation.ViewModel;
 using Xenko.Core.Presentation.Windows;
 using Xenko.Core.Translation;
 using Xenko.Core.Translation.Providers;
 using Xenko.Core.VisualStudio;
+using Xenko.Assets.Presentation;
 using Xenko.Editor.Build;
 using Xenko.Editor.Engine;
 using Xenko.Editor.Preview;
+using Xenko.GameStudio.View;
+using Xenko.Graphics;
 using Xenko.Metrics;
+using Xenko.PrivacyPolicy;
 using EditorSettings = Xenko.Core.Assets.Editor.Settings.EditorSettings;
 using MessageBox = System.Windows.MessageBox;
 using MessageBoxButton = System.Windows.MessageBoxButton;
@@ -239,10 +237,15 @@ namespace Xenko.GameStudio
                 InitializeLanguageSettings();
                 var serviceProvider = InitializeServiceProvider();
 
-                if (!PackageSessionPublicHelper.FindAndSetMSBuildVersion())
+                try
+                {
+                    PackageSessionPublicHelper.FindAndSetMSBuildVersion();
+                }
+                catch (Exception e)
                 {
                     var message = "Could not find a compatible version of MSBuild.\r\n\r\n" +
-                                  "Check that you have a valid installation with the required workloads, or go to [www.visualstudio.com/downloads](https://www.visualstudio.com/downloads) to install a new one.";
+                                  "Check that you have a valid installation with the required workloads, or go to [www.visualstudio.com/downloads](https://www.visualstudio.com/downloads) to install a new one.\r\n\r\n" +
+                                  e;
                     await serviceProvider.Get<IEditorDialogService>().MessageBox(message, Core.Presentation.Services.MessageBoxButton.OK, Core.Presentation.Services.MessageBoxImage.Error);
                     app.Shutdown();
                     return;

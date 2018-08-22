@@ -30,7 +30,7 @@ namespace Xenko.Shaders.Tests
     /// </summary>
     public partial class TestMixinCompiler
     {
-        public static void Main()
+        internal static void Main()
         {
             new TestMixinCompiler().TestMaterial();
         }
@@ -155,7 +155,7 @@ namespace Xenko.Shaders.Tests
             Assert.False(mainBytecode.CompilationLog.HasErrors);
 
             Assert.NotNull(mainBytecode.Bytecode.Reflection.ConstantBuffers);
-            Assert.Equal(1, mainBytecode.Bytecode.Reflection.ConstantBuffers.Count);
+            Assert.Single(mainBytecode.Bytecode.Reflection.ConstantBuffers);
             var cbuffer = mainBytecode.Bytecode.Reflection.ConstantBuffers[0];
 
             Assert.NotNull(cbuffer.Members);
@@ -167,8 +167,8 @@ namespace Xenko.Shaders.Tests
             var computeColorSubComputes = ComputeColor2Keys.Color.ComposeWith("ColorRedirect.SubComputes[0]");
 
             var members = cbuffer.Members.Select(member => member.KeyInfo.KeyName).ToList();
-            Assert.True(members.Contains(computeColorSubCompute2.Name));
-            Assert.True(members.Contains(computeColorSubComputes.Name));
+            Assert.Contains(computeColorSubCompute2.Name, members);
+            Assert.Contains(computeColorSubComputes.Name, members);
         }
 
         private void CopyStream(DatabaseFileProvider database, string fromFilePath)
@@ -212,7 +212,7 @@ namespace Xenko.Shaders.Tests
             //Assert.Equal(results11.MainBytecode.Time, results01.MainBytecode.Time); -> crash, MainBytecode == null
         }
 
-        public void TestNoClean(out CompilerResults left, out CompilerResults right)
+        private void TestNoClean(out CompilerResults left, out CompilerResults right)
         {
             // Create and mount database file system
             var objDatabase = ObjectDatabase.CreateDefaultDatabase();

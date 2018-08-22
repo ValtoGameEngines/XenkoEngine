@@ -72,13 +72,14 @@ namespace Xenko.Assets.Tasks
                     NewFile($@"Bin\{mainPlatformDirectory}\ios-tcprelay\*.py",$@"Bin\{mainPlatformDirectory}\ios-tcprelay"),
                     NewFile(@"Targets\*.targets", "Targets"),
                     NewFile(@"Targets\*.props", "Targets"),
-                    NewFile($@"Bin\{mainPlatformDirectory}\Xenko.Core.*.pdb", $@"Bin\{mainPlatformDirectory}", @"Bin\**\Xenko.Importer*.pdb;Bin\**\Xenko.Assimp.Translation.pdb"),
+                    NewFile($@"Bin\**\Xenko*.pdb", $@"Bin", @"Bin\**\.*\**\*.pdb;Bin\**\Xenko.Importer*.pdb;Bin\**\Xenko.Assimp.Translation.pdb"),
                     NewFile(@"build\Xenko.targets", @"build"),
                     NewFile(@"build\Xenko.props", @"build"),
                     NewFile(@"tools\**\*.exe", "tools"),
                     NewFile(@"tools\**\*.dll", "tools"),
                     NewFile(@"LICENSE.md", @""),
                     NewFile(@"THIRD PARTY.md", @""),
+                    NewFile(@"BACKERS.md", @""),
                 };
 
             // Handle Assets

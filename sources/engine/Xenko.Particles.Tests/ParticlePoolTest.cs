@@ -19,6 +19,7 @@ namespace Xenko.Particles.Tests
         /// <param name="policy">Stack or Ring allocation policy</param>
         [InlineData(ParticlePool.ListPolicy.Stack)]
         [InlineData(ParticlePool.ListPolicy.Ring)]
+        [Theory]
         public unsafe void PoolCapacity(ParticlePool.ListPolicy policy)
         {
             const int maxParticles = 10;
@@ -134,6 +135,7 @@ namespace Xenko.Particles.Tests
         /// <param name="policy">Stack or Ring allocation policy</param>
         [InlineData(ParticlePool.ListPolicy.Stack)]
         [InlineData(ParticlePool.ListPolicy.Ring)]
+        [Theory]
         public unsafe void PoolFields(ParticlePool.ListPolicy policy)
         {
             const int maxParticles = 10;
@@ -296,7 +298,7 @@ namespace Xenko.Particles.Tests
                 var velocityField = pool.GetField(ParticleFields.Velocity);
                 var sizeField = pool.GetField(ParticleFields.Size);
 
-                Assert.Equal(false, velocityField.IsValid());
+                Assert.False(velocityField.IsValid());
 
                 var sorter = new ParticleSorterLiving(pool);
                 var sortedList = sorter.GetSortedList(new Vector3(0, 0, -1));
@@ -328,8 +330,8 @@ namespace Xenko.Particles.Tests
                 var velocityField = pool.GetField(ParticleFields.Velocity);
                 var sizeField = pool.GetField(ParticleFields.Size);
 
-                Assert.Equal(false, velocityField.IsValid());
-                Assert.Equal(false, sizeField.IsValid());
+                Assert.False(velocityField.IsValid());
+                Assert.False(sizeField.IsValid());
 
                 var sorter = new ParticleSorterLiving(pool);
                 var sortedList = sorter.GetSortedList(new Vector3(0, 0, -1));
@@ -359,9 +361,9 @@ namespace Xenko.Particles.Tests
                 var velocityField = pool.GetField(ParticleFields.Velocity);
                 var sizeField = pool.GetField(ParticleFields.Size);
 
-                Assert.Equal(false, velocityField.IsValid());
-                Assert.Equal(false, sizeField.IsValid());
-                Assert.Equal(false, positionField.IsValid());
+                Assert.False(velocityField.IsValid());
+                Assert.False(sizeField.IsValid());
+                Assert.False(positionField.IsValid());
 
                 var sorter = new ParticleSorterLiving(pool);
                 var sortedList = sorter.GetSortedList(new Vector3(0, 0, -1));

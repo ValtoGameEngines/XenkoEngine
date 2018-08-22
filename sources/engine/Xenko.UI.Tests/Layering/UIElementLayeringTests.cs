@@ -27,7 +27,7 @@ namespace Xenko.UI.Tests.Layering
         /// <summary>
         /// Performs all the tests
         /// </summary>
-        public void TestAll()
+        internal void TestAll()
         {
             TestCalculateAdjustmentOffsets();
             TestCalculateAvailableSizeWithoutThickness();
@@ -152,7 +152,7 @@ namespace Xenko.UI.Tests.Layering
             Assert.Equal(HorizontalAlignment.Stretch, newElement.HorizontalAlignment);
             Assert.Equal(VerticalAlignment.Stretch, newElement.VerticalAlignment);
             Assert.Equal(DepthAlignment.Center, newElement.DepthAlignment);
-            Assert.Equal(null, newElement.Name);
+            Assert.Null(newElement.Name);
             Assert.Equal(Thickness.UniformCuboid(0), newElement.Margin);
             Assert.Equal(Matrix.Identity, newElement.LocalMatrix);
 
@@ -387,7 +387,7 @@ namespace Xenko.UI.Tests.Layering
             Measure(10 * Vector3.One + 1000 * rand.NextVector3());
             Assert.Equal(Vector3.Zero, DesiredSize);
             Assert.Equal(Vector3.Zero, DesiredSizeWithMargins);
-            Assert.Equal(true, IsMeasureValid);
+            Assert.True(IsMeasureValid);
         }
 
         /// <summary>
@@ -467,7 +467,7 @@ namespace Xenko.UI.Tests.Layering
             Measure(availableSize);
             Assert.Equal(truncedExpectedSize, DesiredSize);
             Assert.Equal(truncedExpectedSizeWithMargins, DesiredSizeWithMargins);
-            Assert.Equal(true, IsMeasureValid);
+            Assert.True(IsMeasureValid);
         }
 
         private Action onCollapsedOverride;
@@ -533,7 +533,7 @@ namespace Xenko.UI.Tests.Layering
         {
             Measure(arrangeSize);
             Arrange(arrangeSize, isParentCollapsed);
-            Assert.Equal(true, IsArrangeValid);
+            Assert.True(IsArrangeValid);
             Assert.Equal(expectedSize, RenderSize);
             Assert.Equal(expectedOffset, RenderOffsets);
             Assert.Equal(shouldBeCollapsed, collaspedHasBeenCalled);
@@ -595,7 +595,7 @@ namespace Xenko.UI.Tests.Layering
             InvalidateMeasure();
             Measure(Vector3.Zero);
             Arrange(Vector3.Zero, false);
-            Assert.Equal(true, IsMeasureValid);
+            Assert.True(IsMeasureValid);
 
             // set the default callbacks
             var desiredSize = 1000 * rand.NextVector3();
@@ -904,29 +904,29 @@ namespace Xenko.UI.Tests.Layering
             TestArrangeInvalidation(() => DepthAlignment = DepthAlignment.Center);
         }
 
-        public void TestMeasureInvalidation(Action changeProperty)
+        internal void TestMeasureInvalidation(Action changeProperty)
         {
             TestMeasureInvalidation(this, changeProperty);
         }
 
-        public void TestArrangeInvalidation(Action changeProperty)
+        internal void TestArrangeInvalidation(Action changeProperty)
         {
             TestArrangeInvalidation(this, changeProperty);
         }
 
-        public void TestNoInvalidation(Action changeProperty)
+        internal void TestNoInvalidation(Action changeProperty)
         {
             TestNoInvalidation(this, changeProperty);
         }
 
-        public static void TestMeasureInvalidation(UIElement element, Action changeProperty)
+        internal static void TestMeasureInvalidation(UIElement element, Action changeProperty)
         {
             element.Measure(Vector3.Zero);
             changeProperty();
             Assert.False(element.IsMeasureValid);
         }
 
-        public static void TestArrangeInvalidation(UIElement element, Action changeProperty)
+        internal static void TestArrangeInvalidation(UIElement element, Action changeProperty)
         {
             element.Measure(Vector3.Zero);
             element.Arrange(Vector3.Zero, false);
@@ -935,7 +935,7 @@ namespace Xenko.UI.Tests.Layering
             Assert.False(element.IsArrangeValid);
         }
 
-        public static void TestNoInvalidation(UIElement element, Action changeProperty)
+        internal static void TestNoInvalidation(UIElement element, Action changeProperty)
         {
             element.Measure(Vector3.Zero);
             element.Arrange(Vector3.Zero, false);
@@ -999,8 +999,8 @@ namespace Xenko.UI.Tests.Layering
         private void AssertArrangeState(UIElement element, bool noForce, bool isValid)
         {
             Assert.Equal(isValid, element.IsArrangeValid);
-            Assert.Equal(true, element.IsMeasureValid);
-            Assert.Equal(false, element.ForceNextMeasure);
+            Assert.True(element.IsMeasureValid);
+            Assert.False(element.ForceNextMeasure);
             Assert.Equal(!noForce, element.ForceNextArrange);
         }
 
@@ -1012,14 +1012,14 @@ namespace Xenko.UI.Tests.Layering
 
         private void AssertArrangeCalls(MeasureArrangeCallChecker element, bool shouldBeCalled)
         {
-            Assert.Equal(false, element.MeasureHasBeenCalled);
+            Assert.False(element.MeasureHasBeenCalled);
             Assert.Equal(shouldBeCalled, element.ArrangeHasBeenCalled);
         }
 
         private void AssertUpdateMeasureCalls(MeasureArrangeCallChecker element, bool shouldBeCalled)
         {
             Assert.Equal(shouldBeCalled, element.MeasureHasBeenCalled);
-            Assert.Equal(false, element.ArrangeHasBeenCalled);
+            Assert.False(element.ArrangeHasBeenCalled);
         }
         
         /// <summary>
