@@ -39,6 +39,9 @@ Thank you everybody for your generous contributions!
 * Cobalt
 * Matthias Hölzl
 * Ryan Galkowski
+* Jon Stelly
+* Jean-Baptiste Perrier
+* Antony K. Jones
 
 ## Mini Backers
 

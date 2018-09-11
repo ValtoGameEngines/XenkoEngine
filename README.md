@@ -17,7 +17,7 @@ Xenko is covered by [MIT](LICENSE.md), unless stated otherwise (i.e. for some fi
 
 You can find the list of third party projects [here](THIRD%20PARTY.md).
 
-Contributors need to sign the following [Contribution License Agreement](doc/ContributorLicenseAgreement.md).
+Contributors need to sign the following [Contribution License Agreement](docs/ContributorLicenseAgreement.md).
 
 ## Documentation
 
@@ -40,10 +40,13 @@ Ask for help or report issues:
 
 1. [Git](https://git-scm.com/downloads) (recent version that includes LFS, or install [Git LFS](https://git-lfs.github.com/) separately).
 2. [Visual Studio 2017](https://www.visualstudio.com/downloads/) with the following workloads:
-  * .NET desktop development (with .NET Framework 4.6.2 development tools)
+  * .NET desktop development
+    * If your OS is Windows 10: add `.NET Framework 4.6.2 development tools` in optional components of `.NET desktop development`
+    * If your OS is Windows 7: [.NET 4.6.2 Developer Pack](https://www.microsoft.com/net/download/thank-you/net462-developer-pack))
   * Desktop development with C++
-  * Optional: Universal Windows Platform development
-  * Optional: Mobile development with .NET
+  * .NET Core cross-platform development
+  * Optional (to target UWP): Universal Windows Platform development
+  * Optional (to target iOS/Android): Mobile development with .NET
 3. [FBX SDK 2019.0 VS2015](https://www.autodesk.com/developer-network/platform-technologies/fbx-sdk-2019-0)
 
 ### Build Xenko
@@ -53,6 +56,10 @@ Ask for help or report issues:
 3. Open `<XenkoDir>\build\Xenko.sln` with Visual Studio 2017, and build.
 4. Open `<XenkoDir>\samples\XenkoSamples.sln` and play with the samples.
 5. Optionally, open and build `Xenko.Android.sln`, `Xenko.iOS.sln`, etc...
+
+### Contribution Guidelines
+
+Please check our [Contributing Guidelines](docs/CONTRIBUTING.md).
 
 ### Build Status
 
