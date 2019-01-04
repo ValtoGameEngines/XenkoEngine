@@ -40,22 +40,21 @@ Ask for help or report issues:
 
 1. [Git](https://git-scm.com/downloads) (recent version that includes LFS, or install [Git LFS](https://git-lfs.github.com/) separately).
 2. [Visual Studio 2017](https://www.visualstudio.com/downloads/) with the following workloads:
-  * .NET desktop development
-    * If your OS is Windows 10: add `.NET Framework 4.6.2 development tools` in optional components of `.NET desktop development`
-    * If your OS is Windows 7: [.NET 4.6.2 Developer Pack](https://www.microsoft.com/net/download/thank-you/net462-developer-pack))
-  * Desktop development with C++
-  * .NET Core cross-platform development
-  * Optional (to target UWP): Universal Windows Platform development
-  * Optional (to target iOS/Android): Mobile development with .NET
+  * `.NET desktop development`
+    * If your OS is Windows 10: add `.NET Framework 4.7.2 development tools` in optional components of `.NET desktop development`
+    * If your OS is Windows 7: [.NET 4.7.2 Developer Pack](https://www.microsoft.com/net/download/thank-you/net472-developer-pack))
+  * `Desktop development with C++`
+  * `.NET Core cross-platform development`
+  * Optional (to target UWP): `Universal Windows Platform development` with `Windows 10 SDK (10.0.16299.0)` and `Windows 10 SDK (10.0.17134.0)`
+  * Optional (to target iOS/Android): `Mobile development with .NET` and `Android NDK R13B+` individual component
 3. [FBX SDK 2019.0 VS2015](https://www.autodesk.com/developer-network/platform-technologies/fbx-sdk-2019-0)
 
 ### Build Xenko
 
 1. Clone Xenko: `git clone https://github.com/xenko3d/xenko.git`
-2. Set *XenkoDir* environment variable to point to your `<XenkoDir>`
-3. Open `<XenkoDir>\build\Xenko.sln` with Visual Studio 2017, and build.
-4. Open `<XenkoDir>\samples\XenkoSamples.sln` and play with the samples.
-5. Optionally, open and build `Xenko.Android.sln`, `Xenko.iOS.sln`, etc...
+2. Open `<XenkoDir>\build\Xenko.sln` with Visual Studio 2017, and build.
+3. Open `<XenkoDir>\samples\XenkoSamples.sln` and play with the samples.
+4. Optionally, open and build `Xenko.Android.sln`, `Xenko.iOS.sln`, etc...
 
 ### Contribution Guidelines
 

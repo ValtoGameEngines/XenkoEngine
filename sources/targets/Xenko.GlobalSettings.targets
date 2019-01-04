@@ -1,9 +1,16 @@
-﻿<!-- Global settings used to configure the XenkoGraphicsApi -->
+<!-- Global settings used to configure the XenkoGraphicsApi -->
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
   <!-- Default values -->
   <PropertyGroup>
-    <XenkoGraphicsApi Condition=" '$(XenkoGraphicsApi)' == ''">Direct3D11</XenkoGraphicsApi>
+    <!-- Defaults for CPU and GraphicsApi based on platform-->
+    <XenkoDefaultGraphicsApi Condition="'$(XenkoPlatform)' == 'Windows'">Direct3D11</XenkoDefaultGraphicsApi>
+    <XenkoDefaultGraphicsApi Condition="'$(XenkoPlatform)' == 'UWP'">Direct3D11</XenkoDefaultGraphicsApi>
+    <XenkoDefaultGraphicsApi Condition="'$(XenkoPlatform)' == 'Android'">OpenGLES</XenkoDefaultGraphicsApi>
+    <XenkoDefaultGraphicsApi Condition="'$(XenkoPlatform)' == 'iOS'">OpenGLES</XenkoDefaultGraphicsApi>
+    <XenkoDefaultGraphicsApi Condition="'$(XenkoPlatform)' == 'Linux'">OpenGL</XenkoDefaultGraphicsApi>
+    <XenkoDefaultGraphicsApi Condition="'$(XenkoPlatform)' == 'macOS'">OpenGL</XenkoDefaultGraphicsApi>
+    <XenkoGraphicsApi Condition="'$(XenkoGraphicsApi)' == '' and '$(XenkoDefaultGraphicsApi)' != ''">$(XenkoDefaultGraphicsApi)</XenkoGraphicsApi>
     <XenkoAssemblyProcessorOptions Condition="'$(XenkoAssemblyProcessorOptions)' == ''">$(XenkoAssemblyProcessorDefaultOptions)</XenkoAssemblyProcessorOptions>
   </PropertyGroup>
 
@@ -14,6 +21,46 @@
 
   <!--Import global Xenko settings-->
   <Import Project="$(MSBuildThisFileDirectory)..\targets\Xenko.Core.GlobalSettings.targets"/>
+
+  <!-- Include platform dependent assembly when specified -->
+  <PropertyGroup Condition="'$(XenkoGraphicsApiDependent)' == 'true' And '$(XenkoGraphicsApiDependentBuildAll)' == 'true'">
+    <RuntimeIdentifiers Condition="'$(TargetFramework)' == 'net45'">win-d3d11;win-d3d12;win-opengl;win-opengles;win-vulkan</RuntimeIdentifiers>
+    <RuntimeIdentifierDefault Condition="'$(TargetFramework)' == 'net45'">win-d3d11</RuntimeIdentifierDefault>
+    <RuntimeIdentifiers Condition="'$(TargetFramework)' == 'netstandard2.0'">linux-opengl;linux-vulkan</RuntimeIdentifiers>
+    <RuntimeIdentifierDefault Condition="'$(TargetFramework)' == 'netstandard2.0'">linux-opengl</RuntimeIdentifierDefault>
+
+    <ExtrasBuildEachRuntimeIdentifier Condition="'$(RuntimeIdentifiers)' != ''">true</ExtrasBuildEachRuntimeIdentifier>
+    <DisableFastUpToDateCheck Condition="$(RuntimeIdentifiers.Contains(';'))">true</DisableFastUpToDateCheck>
+    <RuntimeIdentifier Condition="'$(RuntimeIdentifier)' == '' And '$(RuntimeIdentifierDefault)' != ''">$(RuntimeIdentifierDefault)</RuntimeIdentifier>
+
+    <XenkoGraphicsApi Condition="'$(RuntimeIdentifier)' == 'win-d3d11'">Direct3D11</XenkoGraphicsApi>
+    <XenkoGraphicsApi Condition="'$(RuntimeIdentifier)' == 'win-d3d12'">Direct3D12</XenkoGraphicsApi>
+    <XenkoGraphicsApi Condition="'$(RuntimeIdentifier)' == 'win-opengl'">OpenGL</XenkoGraphicsApi>
+    <XenkoGraphicsApi Condition="'$(RuntimeIdentifier)' == 'win-opengles'">OpenGLES</XenkoGraphicsApi>
+    <XenkoGraphicsApi Condition="'$(RuntimeIdentifier)' == 'win-vulkan'">Vulkan</XenkoGraphicsApi>
+
+    <XenkoGraphicsApi Condition="'$(RuntimeIdentifier)' == 'linux-opengl'">OpenGL</XenkoGraphicsApi>
+    <XenkoGraphicsApi Condition="'$(RuntimeIdentifier)' == 'linux-vulkan'">Vulkan</XenkoGraphicsApi>
+  </PropertyGroup>
+  
+  <!-- Use default runtime as ref assembly -->
+  <PropertyGroup Condition="'$(XenkoGraphicsApiDependent)' == 'true' And '$(XenkoGraphicsApiDependentBuildAll)' == 'true' And ('$(RuntimeIdentifierDefault)' == '' Or '$(RuntimeIdentifier)' == '$(RuntimeIdentifierDefault)')">
+    <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);XenkoIncludeRefAssemblies</TargetsForTfmSpecificBuildOutput>
+  </PropertyGroup>
+  <Target Name="XenkoIncludeRefAssemblies">
+    <ItemGroup>
+      <TfmSpecificPackageFile Include="@(IntermediateAssembly)" PackagePath="ref/$(TargetFramework)" />
+    </ItemGroup>
+  </Target>
+  
+  <!-- Workaround: Remove RuntimeIdentifier from Solution references (https://github.com/onovotny/MSBuildSdkExtras/issues/139) -->
+  <Target Name="_XenkoRemoveRuntimeIdentifierFromSolutionDependencies" AfterTargets="AssignProjectConfiguration">
+    <ItemGroup>
+      <ProjectReferenceWithConfiguration Condition="'%(ProjectReferenceWithConfiguration.ReferenceSourceTarget)' != 'ProjectReference'">
+        <GlobalPropertiesToRemove>%(ProjectReferenceWithConfiguration.GlobalPropertiesToRemove);RuntimeIdentifier</GlobalPropertiesToRemove>
+      </ProjectReferenceWithConfiguration>
+    </ItemGroup>
+  </Target>
   
   <!-- 
     Settings XenkoGraphicsApi specific
@@ -79,14 +126,31 @@
     <XenkoEffectCompiler>true</XenkoEffectCompiler>
   </PropertyGroup>
 
-  <PropertyGroup Condition=" '$(XenkoRuntime)' == 'CoreCLR' ">
-    <XenkoRuntimeDefines>XENKO_RUNTIME_CORECLR</XenkoRuntimeDefines>
+  <PropertyGroup Condition=" '$(XenkoNETRuntime)' == 'CoreCLR' ">
+    <XenkoNETRuntimeDefines>XENKO_RUNTIME_CORECLR</XenkoNETRuntimeDefines>
     <AutoIncludeSystemAssembly>true</AutoIncludeSystemAssembly>
   </PropertyGroup>
 
   <PropertyGroup>
     <DefineConstants>$(DefineConstants);$(XenkoGraphicsApiDefines);XENKO_SUPPORT_BETA_UPGRADE</DefineConstants>
   </PropertyGroup>
+  
+  <PropertyGroup>
+    <XenkoUI Condition="'$(XenkoUI)' == '' AND '$(XenkoPlatform)' == 'Windows'">SDL;WINFORMS;WPF</XenkoUI>
+    <XenkoUI Condition="'$(XenkoUI)' == '' AND '$(XenkoPlatform)' == 'Linux' AND '$(XenkoGraphicsApi)' == 'Vulkan'">SDL</XenkoUI>
+    <XenkoUI Condition="'$(XenkoUI)' == '' AND '$(XenkoPlatform)' == 'Linux' AND '$(XenkoGraphicsApi)' == 'OpenGL'">SDL;OPENTK</XenkoUI>
+
+    <DefineConstants Condition="$(XenkoUI.Contains('SDL'))">$(DefineConstants);XENKO_UI_SDL</DefineConstants>
+    <DefineConstants Condition="$(XenkoUI.Contains('OPENTK'))">$(DefineConstants);XENKO_UI_OPENTK</DefineConstants>
+    <DefineConstants Condition="$(XenkoUI.Contains('WINFORMS'))">$(DefineConstants);XENKO_UI_WINFORMS</DefineConstants>
+    <DefineConstants Condition="$(XenkoUI.Contains('WPF'))">$(DefineConstants);XENKO_UI_WPF</DefineConstants>
+  </PropertyGroup>
+  <!-- Build the XenkoUIList using the value of XenkoUI -->
+  <ItemGroup Condition="'$(XenkoUIList)' == ''">
+    <XenkoUIList Condition="'$(XenkoUI)' != ''" Include="$(XenkoUI)" />
+    <XenkoUIList Condition="'$(XenkoUI)' == ''" Include="None" />
+  </ItemGroup>
+
   
   <!--Building Xenko SDK itself?-->
   <PropertyGroup Condition=" '$(XenkoUserBuild)' != 'true' ">
@@ -95,4 +159,26 @@
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
+
+  <!-- Pack target -->
+  <!--<UsingTask TaskName="Xenko.Core.Tasks.PackAssets" AssemblyFile="$(MSBuildThisFileDirectory)..\core\Xenko.Core.Tasks\bin\$(Configuration)\net472\Xenko.Core.Tasks.exe" />-->
+  <Target Name="PrepareXenkoAssetsForPack" BeforeTargets="_GetPackageFiles" Condition="'$(XenkoPackAssets)' == 'true'">
+    <!-- We use exec version rather than task version, otherwise file will be locked during rebuild -->
+    <!--<PackAssets ProjectFile="$(MSBuildProjectFile)" IntermediatePackagePath="$(IntermediateOutputPath)\xenko">
+      <Output TaskParameter="GeneratedItems" ItemName="None"/>
+    </PackAssets>-->
+    <Exec Command="&quot;$(MSBuildThisFileDirectory)..\core\Xenko.Core.Tasks\bin\$(Configuration)\net472\Xenko.Core.Tasks.exe&quot; pack-assets &quot;$(MSBuildProjectFile)&quot; &quot;$(IntermediateOutputPath)\xenko&quot;" ConsoleToMsBuild="true">
+      <Output TaskParameter="ConsoleOutput" ItemName="PackAssetsLine" />
+    </Exec>
+    <ItemGroup>
+      <PackAssetsLine Update="@(PackAssetsLine)">
+        <SourcePath>$([System.String]::new('%(Identity)').Split('|')[0])</SourcePath>
+        <PackagePath>$([System.String]::new('%(Identity)').Split('|')[1])</PackagePath>
+      </PackAssetsLine>
+      <None Include="%(PackAssetsLine.SourcePath)">
+        <Pack>true</Pack>
+        <PackagePath>%(PackAssetsLine.PackagePath)</PackagePath>
+      </None>
+    </ItemGroup>
+  </Target>
 </Project>

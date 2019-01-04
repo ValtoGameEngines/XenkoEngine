@@ -43,10 +43,10 @@ namespace Xenko.LauncherApp.Services
                 {
                     await UpdateLauncherFiles(dispatcher, store, CancellationToken.None);
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
                     dispatcher.Invoke(() => selfUpdateWindow?.ForceClose());
-                    const string message = "An error occurred while updating the launcher. If the problem persists, please reinstall this application.";
+                    string message = $"An error occurred while updating the launcher. If the problem persists, please reinstall this application.{Environment.NewLine}{Environment.NewLine}Details:{Environment.NewLine}{e}";
                     await services.Get<IDialogService>().MessageBox(message, MessageBoxButton.OK, MessageBoxImage.Error);
                     // We do not want our users to use the old launcher when a new one is available.
                     Environment.Exit(1);
@@ -93,6 +93,7 @@ namespace Xenko.LauncherApp.Services
                 // TODO: We should get list of previous files from nuspec (store it as a resource and open it with NuGet API maybe?)
                 // TODO: For now, we deal only with the App.config file since we won't be able to fix it afterward.
                 var exeLocation = Assembly.GetEntryAssembly().Location;
+                var exeDirectory = Path.GetDirectoryName(exeLocation);
                 const string directoryRoot = "tools/"; // Important!: this is matching where files are store in the nuspec
                 try
                 {
@@ -109,7 +110,7 @@ namespace Xenko.LauncherApp.Services
                     }
                     foreach (var file in inputFiles.Where(file => file.Path.StartsWith(directoryRoot) && !file.Path.EndsWith("/")))
                     {
-                        var fileName = Path.Combine(store.RootDirectory, file.Path.Substring(directoryRoot.Length));
+                        var fileName = Path.Combine(exeDirectory, file.Path.Substring(directoryRoot.Length));
 
                         // Move previous files to .old
                         if (File.Exists(fileName))

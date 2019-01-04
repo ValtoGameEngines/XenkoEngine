@@ -75,12 +75,8 @@ namespace Xenko.GameStudio
             PrivacyPolicyHelper.RestartApplication = RestartApplication;
             PrivacyPolicyHelper.EnsurePrivacyPolicyXenko30();
 
-            // Set the XenkoDir environment variable
-            var installDir = DirectoryHelper.GetInstallationDirectory("Xenko");
-            Environment.SetEnvironmentVariable("XenkoDir", installDir);
-
             // We use MRU of the current version only when we're trying to reload last session.
-            var mru = new MostRecentlyUsedFileCollection(InternalSettings.LoadProfileCopy, InternalSettings.MostRecentlyUsedSessions, InternalSettings.WriteFile, XenkoGameStudio.EditorVersionMajor, false);
+            var mru = new MostRecentlyUsedFileCollection(InternalSettings.LoadProfileCopy, InternalSettings.MostRecentlyUsedSessions, InternalSettings.WriteFile);
             mru.LoadFromSettings();
 
             EditorSettings.Initialize();
@@ -251,15 +247,8 @@ namespace Xenko.GameStudio
                     return;
                 }
 
-                // Running first time?
-                var packageVersion = new PackageVersion(XenkoVersion.NuGetVersion);
-                if (PackageStore.Instance.IsDevelopmentStore)
-                {
-                    await PackageStore.Instance.CheckDeveloperTargetRedirects("Xenko", packageVersion, PackageStore.Instance.InstallationPath);
-                }
-
                 // We use a MRU that contains the older version projects to display in the editor
-                var mru = new MostRecentlyUsedFileCollection(InternalSettings.LoadProfileCopy, InternalSettings.MostRecentlyUsedSessions, InternalSettings.WriteFile, XenkoGameStudio.EditorVersionMajor, true);
+                var mru = new MostRecentlyUsedFileCollection(InternalSettings.LoadProfileCopy, InternalSettings.MostRecentlyUsedSessions, InternalSettings.WriteFile);
                 mru.LoadFromSettings();
                 var editor = new GameStudioViewModel(serviceProvider, mru);
                 AssetsPlugin.RegisterPlugin(typeof(XenkoDefaultAssetsPlugin));
