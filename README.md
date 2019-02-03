@@ -29,7 +29,7 @@ Find explanations and information about Xenko:
 ## Community
 
 Ask for help or report issues:
-* Chat with the community [![Join the chat at https://gitter.im/xenko3d/xenko](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/xenko3d/xenko?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+* [Chat with the community on Discord](https://discord.gg/f6aerfE) [![Join the chat at https://discord.gg/f6aerfE](https://img.shields.io/discord/500285081265635328.svg?style=flat&logo=discord&label=discord)](https://discord.gg/f6aerfE)
 * [Discuss topics on our forums](http://forums.xenko.com/)
 * [Report engine issues](https://github.com/xenko3d/xenko/issues)
 * [Donate to support the project](https://www.patreon.com/xenko)
@@ -40,10 +40,8 @@ Ask for help or report issues:
 
 1. [Git](https://git-scm.com/downloads) (recent version that includes LFS, or install [Git LFS](https://git-lfs.github.com/) separately).
 2. [Visual Studio 2017](https://www.visualstudio.com/downloads/) with the following workloads:
-  * `.NET desktop development`
-    * If your OS is Windows 10: add `.NET Framework 4.7.2 development tools` in optional components of `.NET desktop development`
-    * If your OS is Windows 7: [.NET 4.7.2 Developer Pack](https://www.microsoft.com/net/download/thank-you/net472-developer-pack))
-  * `Desktop development with C++`
+  * `.NET desktop development` with `.NET Framework 4.7.2 targeting pack`
+  * `Desktop development with C++` with `Windows 10 SDK (10.0.16299)` or later and `VC++ 2017 version 15.9 v14.16 latest v141 tools` or later (both should be enabled by default)
   * `.NET Core cross-platform development`
   * Optional (to target UWP): `Universal Windows Platform development` with `Windows 10 SDK (10.0.16299.0)` and `Windows 10 SDK (10.0.17134.0)`
   * Optional (to target iOS/Android): `Mobile development with .NET` and `Android NDK R13B+` individual component

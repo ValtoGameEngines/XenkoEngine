@@ -14,12 +14,13 @@ Thank you everybody for your generous contributions!
 * Jason Kinzer
 * [Marshmallow Laser Feast](http://www.marshmallowlaserfeast.com/)
 * Jean-Baptiste Perrier
+* Cody Lee
+* Nicolas Musset
 
 ## Backers
 
 * Amin Delavar
 * Rasmus Søborg
-* Nicolas Musset
 * Ravn Ivarson
 * Guy Godin
 * Princess Peach
@@ -40,10 +41,15 @@ Thank you everybody for your generous contributions!
 * Robert Iadanza
 * SleepyMode
 * Marko Viitanen
-* David R Miller
 * Sven-Bertil Blom
 * Natan Sinigaglia
 * Jarmo
+* Eideren
+* Connie
+* Berwyn
+* Andrew Wilson
+* Boris Callens
+* Jarrett K Robertson
 
 ## Mini Backers
 
