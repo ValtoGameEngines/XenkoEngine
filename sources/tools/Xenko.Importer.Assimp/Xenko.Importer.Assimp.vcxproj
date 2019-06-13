@@ -40,19 +40,20 @@
     <ProjectGuid>{C2306552-6C42-464C-8981-32FEF4F9458D}</ProjectGuid>
     <Keyword>ManagedCProj</Keyword>
     <RootNamespace>Xenko.Importer.Assimp</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)'=='Debug'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CLRSupport>true</CLRSupport>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Release'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <CLRSupport>true</CLRSupport>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -194,6 +195,10 @@
     </ProjectReference>
     <ProjectReference Include="..\..\engine\Xenko.Engine\Xenko.Engine.csproj">
       <Project>{c121a566-555e-42b9-9b0a-1696529a9088}</Project>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\engine\Xenko.Rendering\Xenko.Rendering.csproj">
+      <Project>{ad4fdc24-b64d-4ed7-91aa-62c9eda12fa4}</Project>
       <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\..\core\Xenko.Core\Xenko.Core.csproj">
